@@ -85,6 +85,55 @@
         #strategic-debrief-content p { font-size: 1em; margin-bottom: 15px; }
         .recommendations ul li { padding: 8px 0 8px 30px; position: relative; font-size: 1em; }
         .recommendations ul li::before { content: '\f0a9'; font-family: 'Font Awesome 6 Free'; font-weight: 900; color: var(--accent-yellow); position: absolute; left: 0; top: 10px; }
+
+        /* Styles for the new roles section */
+        #rolesInfo {
+            background-color: var(--section-bg);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 30px;
+            text-align: left;
+            width: 100%;
+            max-width: 600px;
+        }
+        #rolesInfo h3 {
+            color: var(--accent-green);
+            margin-top: 0;
+            margin-bottom: 15px;
+            border-bottom: 1px solid var(--interactive-bg);
+            padding-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        #rolesInfo ul {
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+        }
+        #rolesInfo ul li {
+            margin-bottom: 10px;
+            padding-left: 25px;
+            position: relative;
+        }
+        #rolesInfo ul li:last-child {
+            margin-bottom: 0;
+        }
+        #rolesInfo ul li::before {
+            content: '\f007'; /* User icon */
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            color: var(--accent-purple);
+            position: absolute;
+            left: 0;
+            top: 3px;
+        }
+        #rolesInfo ul li.your-role::before {
+            color: var(--accent-yellow); /* Highlight your role */
+        }
+        #rolesInfo ul li strong {
+            color: var(--accent-blue);
+        }
     </style>
 </head>
 <body>
@@ -93,6 +142,19 @@
             <h1><i class="fa-solid fa-user-secret"></i> Breach of Trust Simulation</h1>
             <p style="max-width: 600px;">Welcome, Director of Cybersecurity! Today you will face a crisis that engulfs your company, a crisis that goes beyond technology: the **Insider Threat**. Leaked data, a falling reputation, and shattered trust... In this simulation, you will not only solve technical problems but also make difficult decisions involving human psychology, corporate culture, and ethical dilemmas. Every choice you make will determine the course of the crisis and the fate of the company. Are you ready?</p>
             <img src="images/intro_cyber.png" alt="An intro graphic with a cybersecurity theme" class="scenario-image">
+
+            <div id="rolesInfo">
+                <h3><i class="fa-solid fa-people-arrows"></i> Simulation Roles</h3>
+                <ul>
+                    <li class="your-role"><strong>Your Role: Director of Cybersecurity</strong> - You are responsible for leading the investigation, making critical decisions, and managing the company's response to the crisis. Your choices directly impact the outcome.</li>
+                    <li><strong>CEO - Hande</strong> - The company's top executive, focused on overall business continuity and public perception.</li>
+                    <li><strong>CFO - Arda</strong> - Responsible for the financial health of the company, closely monitoring losses and potential impacts on future investments.</li>
+                    <li><strong>Legal Counsel - Zeynep</strong> - Oversees legal compliance and advises on public statements to mitigate legal risks.</li>
+                    <li><strong>Ayşe Sarı - Sales Manager</strong> - Your team member who initially discovered the leak.</li>
+                    <li><strong>Potential Suspects (Elif, Can, Burak, Ayşe Sarı)</strong> - Employees who may be connected to the incident, either as perpetrators or victims.</li>
+                </ul>
+            </div>
+
             <button class="btn btn-start" id="startButton"><i class="fa-solid fa-play"></i> Start Simulation</button>
         </div>
 
@@ -136,6 +198,7 @@
                     ayseClueFound: false,
                     decisionHistory: []
                 },
+                
                 elements: {},
                 
                 decisionInfo: {
@@ -242,7 +305,7 @@
                         outcomeText = "It was revealed that Can Yılmaz was manipulated by external forces and leaked information due to his financial debts. This is a 'manipulated insider' threat.";
                         outcomeStrat = "It became clear how employees' personal problems can increase cybersecurity risks.";
                         changes = { financialLoss: 50000, reputation: -15, affectedPersonnel: 1 }; nextSection = 'section4';
-                         finalDecisionInfo = { title: 'Root Cause ID: Manipulated Employee', impactText: 'You found the employee under financial pressure.', impactType: 'Neutral' };
+                        finalDecisionInfo = { title: 'Root Cause ID: Manipulated Employee', impactText: 'You found the employee under financial pressure.', impactType: 'Neutral' };
                     } else if (this.state.burakClueFound) {
                         outcomeTitle = "On the Wrong Trail!";
                         outcomeText = "It was found that former employee Burak Kara tried to steal information using his old access credentials but was unsuccessful. While this is a security vulnerability, it was not the source of the main leak.";
@@ -359,9 +422,9 @@
                         debriefHTML += `<p><strong>Missed Opportunity:</strong> The possibility of human factors and social engineering was overlooked during the investigation. This made it difficult to find the root cause and prolonged the process.</p>`;
                     }
                     if(finalRep > 80) {
-                         debriefHTML += `<p><strong>Reputation Management Success:</strong> Your transparent and proactive stance in crisis communication played a key role in restoring and even strengthening public trust.</p>`;
+                            debriefHTML += `<p><strong>Reputation Management Success:</strong> Your transparent and proactive stance in crisis communication played a key role in restoring and even strengthening public trust.</p>`;
                     } else if (finalRep < 50) {
-                         debriefHTML += `<p><strong>Communication Failure:</strong> Mistakes in crisis communication led to a severe blow to your reputation. Rebuilding trust will be a long and costly process.</p>`;
+                            debriefHTML += `<p><strong>Communication Failure:</strong> Mistakes in crisis communication led to a severe blow to your reputation. Rebuilding trust will be a long and costly process.</p>`;
                     }
                     debriefContent.innerHTML = debriefHTML;
 
@@ -371,7 +434,7 @@
                         recommendationsHTML.add(`<li>Strengthen technical controls such as Multi-Factor Authentication (MFA).</li>`);
                     }
                     if(this.state.burakClueFound) {
-                         recommendationsHTML.add(`<li>Update off-boarding procedures for departing employees to ensure all access is immediately revoked.</li>`);
+                            recommendationsHTML.add(`<li>Update off-boarding procedures for departing employees to ensure all access is immediately revoked.</li>`);
                     }
                     recommendationsHTML.add(`<li>Create a 'Crisis Communication Plan' with clearly defined roles and responsibilities.</li>`);
                     recommendationsList.innerHTML = Array.from(recommendationsHTML).join('');
@@ -384,7 +447,7 @@
                     if (!chatViewer) return;
                     let chat = '';
                     if (['section2', 'section2-1', 'section3', 'section3-ayse', 'section3-ayse-conclusion'].includes(currentSection)) {
-                         chat = `<div class="message"><span class="sender">CEO Hande:</span> This leak is unacceptable! Find who's responsible, quickly!</div><div class="message"><span class="sender cfo">CFO Arda:</span> We are assessing the financial risks. What are the potential legal consequences?</div><div class="message"><span class="sender legal">Legal Zeynep:</span> Let's avoid making any public statements until we fully understand the situation.</div><div class="message"><span class="sender">You:</span> My team and I have launched a detailed internal investigation.</div>`;
+                            chat = `<div class="message"><span class="sender">CEO Hande:</span> This leak is unacceptable! Find who's responsible, quickly!</div><div class="message"><span class="sender cfo">CFO Arda:</span> We are assessing the financial risks. What are the potential legal consequences?</div><div class="message"><span class="sender legal">Legal Zeynep:</span> Let's avoid making any public statements until we fully understand the situation.</div><div class="message"><span class="sender">You:</span> My team and I have launched a detailed internal investigation.</div>`;
                     } else if (currentSection === 'section4') {
                         chat = `<div class="message"><span class="sender">CEO Hande:</span> We are preparing the public statement. Let's confirm one last time. How much are we sharing?</div><div class="message"><span class="sender legal">Legal Zeynep:</span> We have legal responsibilities, but we must also protect the company's image. We need to find a delicate balance.</div><div class="message"><span class="sender cfo">CFO Arda:</span> The cost of this crisis is very high. Will our future investments be affected?</div>`;
                     }
